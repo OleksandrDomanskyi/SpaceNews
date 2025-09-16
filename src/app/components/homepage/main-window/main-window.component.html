@@ -1,4 +1,4 @@
 <div class="home-container">
   <app-search-form></app-search-form>
-  <app-article-list></app-article-list>
+  <app-article-list [articles]="articles$ | async"></app-article-list>
 </div>

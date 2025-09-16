@@ -1,8 +1,13 @@
-<div class="articles-list">
-  <mat-card class="article-card" *ngFor="let article of [1,2,3]">
-    <mat-card-title>Article Title</mat-card-title>
-    <mat-card-content>
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit...
-    </mat-card-content>
+<div class="article__list">
+  <mat-card class="article__card" *ngFor="let article of articles">
+    <img class="article__photo" mat-card-image [src]="article.image_url" alt="{{ article.title }}">
+    <div class="article__info">
+      <mat-card-subtitle class="article__date">&#8986; {{ article.published_at | date:'mediumDate' }}</mat-card-subtitle>
+      <mat-card-title class="article__title">{{ article.title }}</mat-card-title>
+      <mat-card-content class="article__content">{{ article.summary }}...</mat-card-content>
+      <mat-card-actions>
+        <button class="article__button" matButton>Read More &#8594;</button>
+      </mat-card-actions>
+    </div>
   </mat-card>
 </div>
