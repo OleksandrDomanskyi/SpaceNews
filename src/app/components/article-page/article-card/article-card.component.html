@@ -1,8 +1,14 @@
-<div class="article-container">
-  <mat-card>
-    <mat-card-title>Article Title</mat-card-title>
-    <mat-card-content>
-      Full article description goes here...
-    </mat-card-content>
+<ng-container *ngIf="article$ | async as article">
+  <div class="article__header">
+    <img [src]="article.image_url" alt="{{ article.title }}">
+  </div>
+
+  <mat-card class="article__text-block">
+    <mat-card-title class="article__title">{{ article.title }}</mat-card-title>
+    <mat-card-content class="article__content">{{ article.summary }}</mat-card-content>
   </mat-card>
-</div>
+
+  <button routerLink="/" class="article__button" mat-button disableRipple>
+   &#8592; Back to homepage
+  </button>
+</ng-container>

@@ -1,5 +1,9 @@
 <div class="article__list">
-  <mat-card class="article__card" *ngFor="let article of articles">
+  <mat-card 
+    class="article__card" 
+    *ngFor="let article of articles" 
+    [routerLink]="['/article', article.id]"
+  >
     <img class="article__photo" mat-card-image [src]="article.image_url" alt="{{ article.title }}">
     <div class="article__info">
       <mat-card-subtitle class="article__date">&#8986; {{ article.published_at | date:'mediumDate' }}</mat-card-subtitle>
