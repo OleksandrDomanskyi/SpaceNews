@@ -4,7 +4,7 @@
     grid-template-columns: repeat(3, 400px);
     gap: 24px;
     justify-content: center;
-    margin: 32px auto;
+    margin-left: 75px;
     height: 530px;
     background-color: white;
   }
@@ -58,14 +58,15 @@
   }
 }
 
-// .mat-mdc-card {
-//   justify-content: space-between;
-// }
-
 .mat-mdc-card-content {
   padding: 0;
 }
 
 .mat-mdc-card-actions{
   padding: 0;
+}
+
+.highlight {
+  background-color: yellow;
+  font-weight: bold;
 }

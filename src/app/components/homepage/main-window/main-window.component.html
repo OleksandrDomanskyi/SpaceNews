@@ -1,4 +1,5 @@
 <div class="home-container">
-  <app-search-form></app-search-form>
-  <app-article-list [articles]="articles$ | async"></app-article-list>
+  <app-search-form (search)="onSearch($event)"></app-search-form>
+  <app-search-result [count]="(articles$ | async)?.length ?? 0"></app-search-result>
+  <app-article-list [articles]="articles$ | async" [searchTerm]="(searchTerm$ | async) ?? ''"></app-article-list>
 </div>

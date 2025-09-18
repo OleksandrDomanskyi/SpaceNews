@@ -1,4 +1,4 @@
-<mat-form-field appearance="fill" class="search-field">
-  <mat-label>Search articles</mat-label>
-  <input matInput [(ngModel)]="keyword" placeholder="Enter keyword" />
+<mat-form-field appearance="outline" class="search-field">
+  <mat-label class="search-field__label">Filter by keywords</mat-label>
+  <input class="search-field__input" matInput [formControl]="searchControl" placeholder="Enter keyword" />
 </mat-form-field>

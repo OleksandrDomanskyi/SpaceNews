@@ -5,7 +5,8 @@ import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { switchMap } from 'rxjs/operators';
 import { Observable } from 'rxjs';
-import { Article, ArticleService } from '../../../services/article-service.service';
+import { ArticleService } from '../../../services/article-service.service';
+import { Article } from '../../../models/article.model';
 
 @Component({
   selector: 'app-article-card',
