@@ -10,5 +10,5 @@ import { CommonModule } from '@angular/common';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SearchResultComponent {
-  @Input() count: number | null = null;
+  @Input() public count: number | null = null;
 }

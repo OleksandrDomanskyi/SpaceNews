@@ -1,11 +1,12 @@
-import { Component, ChangeDetectionStrategy } from '@angular/core';
+import { Component, ChangeDetectionStrategy, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Observable, BehaviorSubject, combineLatest, map, startWith } from 'rxjs';
 import { SearchFormComponent } from './search-form/search-form.component';
-import { SearchResultComponent } from '../search-result/search-result.component';
+import { SearchResultComponent } from './search-result/search-result.component';
 import { ArticleListComponent } from './article-list/article-list.component';
 import { ArticleService } from '../../../services/article-service.service';
 import { Article } from '../../../models/article.model';
-import { catchError, of, Observable, BehaviorSubject, combineLatest, map, startWith } from 'rxjs';
+import { calculateMatchScore } from '../../../helpers/match-score.helper';
 
 @Component({
   selector: 'app-main-window',
@@ -16,39 +17,26 @@ import { catchError, of, Observable, BehaviorSubject, combineLatest, map, startW
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class MainWindowComponent {
-  public searchTerm$ = new BehaviorSubject<string>('');
-  articles$!: Observable<Article[]>;
+  private readonly articleService = inject(ArticleService);
+  public readonly searchTerm$ = new BehaviorSubject<string>('');
 
-  constructor(private articleService: ArticleService) {}
+  public readonly articles$: Observable<Article[]> = combineLatest([
+    this.articleService.getArticles(),
+    this.searchTerm$.pipe(startWith('')),
+  ]).pipe(
+    map(([articles, term]) => {
+      if (!term) return articles;
 
-  ngOnInit() {
-    this.articles$ = combineLatest([
-      this.articleService.getArticles(),
-      this.searchTerm$.pipe(startWith(''))
-    ]).pipe(
-      map(([articles, term]) => {
-        if (!term) return articles;
+      const keywords = term.toLowerCase().split(/\s+/).filter(Boolean);
 
-        const keywords = term.toLowerCase().split(/\s+/);
+      return articles
+        .map(a => ({ ...a, _score: calculateMatchScore(a, keywords) }))
+        .filter(a => a._score > 0)
+        .sort((a, b) => b._score - a._score);
+    })
+  );
 
-        const matchScore = (article: Article): number => {
-          let score = 0;
-          for (const word of keywords) {
-            if (article.title.toLowerCase().includes(word)) score += 2;
-            if (article.summary.toLowerCase().includes(word)) score += 1;
-          }
-          return score;
-        };
-
-        return articles
-          .map(a => ({ ...a, _score: matchScore(a) }))
-          .filter(a => a._score > 0)
-          .sort((a, b) => b._score - a._score);
-      })
-    );
-  }
-
-  onSearch(term: string) {
+  public onSearch(term: string): void {
     this.searchTerm$.next(term);
   }
 }
